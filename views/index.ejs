@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>sender</th>
+            <th>receiver</th>
+            <th>message</th>
+        </tr>
+        <% messages.forEach(element => { %>
+            <tr>
+                <td><%= element.id %></td>
+                <td><%= element.sender.username %></td>
+                <td><%= element.to.username %></td>
+                <td><%= element.content %></td>
+            </tr>
+        <% }); %>
+    </table>
+    <!-- <label for="from">From</label>
+    <select name="from" id="from">
+        <% users.forEach(element => { %>
+            <option value="<%= element.id %>"><%= element.username %></option>
+        <% }); %>
+    </select> -->
+
+    <!-- <br> -->
+
+    <label for="to">To</label>
+    <select name="to" id="to">
+        <% users.forEach(element => { %>
+            <option value="<%= element.id %>"><%= element.username %></option>
+        <% }); %>
+    </select>
+
+    <br>
+
+    <textarea name="" id="messageText"></textarea>
+    <button onclick="send()">Send</button>
+
+    <script>
+        const text = document.getElementById("messageText");
+        // const fromElement = document.getElementById("from");
+        const userId = localStorage.getItem("id");
+        const toElement = document.getElementById("to");
+
+        function send() {
+            fetch(`http://localhost:3300/chat/add?id=${userId}`, {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: "POST",
+                body: JSON.stringify({
+                    content: text.value,
+                    sender_id: Number(userId),
+                    to_id: Number(toElement.value)
+                })
+            }).then((res) => {
+                location.reload()
+            })
+        }
+    </script>
+</body>
+</html>

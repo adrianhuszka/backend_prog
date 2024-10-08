@@ -1,0 +1,13 @@
+model user {
+    id Int @id @default(autoincrement())
+    username String @unique
+    password String
+    email String @unique
+    birth_date DateTime
+    created_at DateTime
+    updated_at DateTime
+
+    api_key apikey?
+    sent_messages chat[] @relation("sender")
+    rec_messages chat[] @relation("receiver")
+}

@@ -1,0 +1,10 @@
+model chat {
+    id Int @id @default(autoincrement())
+    content String @db.VarChar(200)
+    created_at DateTime
+
+    sender user @relation(name: "sender", fields: [sender_id], references: [id])
+    sender_id Int
+    to user @relation(name: "receiver", fields: [to_id], references: [id])
+    to_id Int
+}
