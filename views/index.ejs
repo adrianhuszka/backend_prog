@@ -44,9 +44,14 @@
     <button onclick="send()">Send</button>
 
     <script>
+        const userId = localStorage.getItem("id");
+
+        if(userId === null) {
+            location.replace("http://localhost:3300/login")
+        }
+
         const text = document.getElementById("messageText");
         // const fromElement = document.getElementById("from");
-        const userId = localStorage.getItem("id");
         const toElement = document.getElementById("to");
 
         function send() {

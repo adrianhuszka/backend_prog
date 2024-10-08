@@ -12,6 +12,12 @@
     <input type="button" value="Login" onclick="login()">
 
     <script>
+        const userId = localStorage.getItem("id");
+
+        if (userId !== null) {
+            location.replace("http://localhost:3300")
+        }
+
         const username = document.getElementById("username");
         const password = document.getElementById("password");
 
@@ -29,8 +35,9 @@
                 // location.reload()
                 const msg = await res.json()
                 console.log(msg.message)
-
+                
                 localStorage.setItem("id", msg.message)
+                location.replace("http://localhost:3300")
             })
         }
     </script>
