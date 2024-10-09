@@ -6,20 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-    <input type="text" name="" id="username">
-    <input type="password" name="" id="password">
+    <input type="text" name="username" id="username">
+    <input type="password" name="password" id="password">
     <input type="button" value="Login" onclick="login()">
-
     <script>
-        const userId = localStorage.getItem("id");
-
-        if (userId !== null) {
-            location.replace("http://localhost:3300")
-        }
-
         const username = document.getElementById("username");
         const password = document.getElementById("password");
+        const userId = localStorage.getItem("id");
+
+        if (userId) {
+            location.replace("/")
+        }
 
         function login() {
             fetch("http://localhost:3300/user/login", {
@@ -32,14 +31,16 @@
                     password: password.value
                 })
             }).then(async (res) => {
-                // location.reload()
                 const msg = await res.json()
                 console.log(msg.message)
-                
-                localStorage.setItem("id", msg.message)
-                location.replace("http://localhost:3300")
+
+                if (typeof msg.message === "number") {
+                    localStorage.setItem("id", msg.message)
+                    location.replace("/")
+                }
             })
         }
     </script>
 </body>
+
 </html>

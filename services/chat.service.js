@@ -13,6 +13,20 @@ export async function listAllMessages() {
     return data;
 }
 
+export async function userMessages(user_id) {
+    const data = await prisma.chat.findMany({
+        include: {
+            sender: true,
+            to: true
+        },
+        where: {
+            sender_id: user_id
+        }
+    })
+
+    return data
+}
+
 export async function addMessage(content, sender_id, to_id) {
     await prisma.chat.create({
         data: {

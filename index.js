@@ -19,11 +19,9 @@ app.use("/chat", verifyApiKey, chatRouter)
 app.use("/auth", authRouter)
 
 app.get("/", async (req, res) => {
-    const messagesData = await listAllMessages();
     const userData = await listAllUsers();
 
     res.render("index", {
-        messages: messagesData,
         users: userData
     })
 })

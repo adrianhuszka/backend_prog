@@ -1,5 +1,5 @@
 import express from 'express';
-import { listAllUsers, addUser, deleteUser, updateUser, login } from '../services/user.service.js';
+import { listAllUsers, addUser, deleteUser, updateUser, login, logout } from '../services/user.service.js';
 import { genAPIKey } from '../services/auth.service.js'
 
 const router = express.Router();
@@ -11,6 +11,7 @@ router.get("/getAll", async (req, res) => {
 
 router.post("/login", async (req, res) => {
     const { username, password } = req.body;
+    console.log(req.body)
     const data = await login(username, password);
 
     if(data) {
@@ -21,6 +22,16 @@ router.post("/login", async (req, res) => {
     } else {
         res.status(401).json({ message: "Bad Request" })
     }
+})
+
+// POST vagy DELETE
+router.delete("/logout", async (req, res) => {
+    const user_id = Number(req.query.id);
+    // const { user_id } = req.body
+    await logout(user_id);
+
+    res.clearCookie("apiKey")
+    res.status(200).json({ message: "Successfully logged out" })
 })
 
 router.post("/add", async (req, res) => {

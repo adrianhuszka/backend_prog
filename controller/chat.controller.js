@@ -1,11 +1,17 @@
 import express from 'express';
-import { addMessage, deleteMessage, listAllMessages, updateMessage } from '../services/chat.service.js'
+import { addMessage, deleteMessage, listAllMessages, updateMessage, userMessages } from '../services/chat.service.js'
 
 const router = express.Router();
 
 router.get("/getAll", async (req, res) => {
     const data = await listAllMessages()
     res.status(200).json(data);
+})
+
+router.get("/userMessages", async (req, res)=> {
+    const user_id = Number(req.query.id);
+    const data = await userMessages(user_id)
+    res.status(200).json(data)
 })
 
 router.post("/add", async (req, res) => {

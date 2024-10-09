@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <table>
         <tr>
@@ -13,46 +15,47 @@
             <th>receiver</th>
             <th>message</th>
         </tr>
-        <% messages.forEach(element => { %>
-            <tr>
-                <td><%= element.id %></td>
-                <td><%= element.sender.username %></td>
-                <td><%= element.to.username %></td>
-                <td><%= element.content %></td>
-            </tr>
-        <% }); %>
-    </table>
-    <!-- <label for="from">From</label>
-    <select name="from" id="from">
-        <% users.forEach(element => { %>
-            <option value="<%= element.id %>"><%= element.username %></option>
-        <% }); %>
-    </select> -->
 
-    <!-- <br> -->
+    </table>
 
     <label for="to">To</label>
     <select name="to" id="to">
-        <% users.forEach(element => { %>
-            <option value="<%= element.id %>"><%= element.username %></option>
-        <% }); %>
+        <% users.forEach(element=> { %>
+            <option value="<%= element.id %>">
+                <%= element.username %>
+            </option>
+            <% }); %>
     </select>
 
     <br>
 
     <textarea name="" id="messageText"></textarea>
     <button onclick="send()">Send</button>
+    <button onclick="logout()">Logout</button>
 
     <script>
+        const text = document.getElementById("messageText");
         const userId = localStorage.getItem("id");
+        const toElement = document.getElementById("to");
 
-        if(userId === null) {
-            location.replace("http://localhost:3300/login")
+        fetch(`/chat/userMessages?id=${userId}`).then((res) => {
+            console.log(res)
+        })
+
+
+        if (!userId) {
+            location.replace("/login")
         }
 
-        const text = document.getElementById("messageText");
-        // const fromElement = document.getElementById("from");
-        const toElement = document.getElementById("to");
+        function logout() {
+            fetch(`http://localhost:3300/user/logout?id=${userId}`, {
+                method: "DELETE"
+            }).then((res) => {
+                // localStorage.clear()
+                localStorage.removeItem("id")
+                location.replace("/login")
+            })
+        }
 
         function send() {
             fetch(`http://localhost:3300/chat/add?id=${userId}`, {
@@ -71,4 +74,5 @@
         }
     </script>
 </body>
+
 </html>
